@@ -1,0 +1,21 @@
+@model IEnumerable<UserDTO>;
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">User</th>
+      <th scope="col">Email</th>
+      <th scope="col">Roles</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach(var user in Model){
+        <tr>
+        <td>@user.UserName</td>
+        <td>@user.Email</td>
+        <td>@string.Join(" , ",user.Roles.ToList())</td>
+        <td><a class="btn btn-primary" asp-action="ManageRoles" asp-route-userName="@user.UserName">Manage Roles</a></td>
+        </tr>
+    }
+</tbody>
