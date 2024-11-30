@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +14,11 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkSto
 builder.Services.AddTransient<Microsoft.AspNetCore.Identity.UI.Services.IEmailSender, EmailSender>();
 
 builder.Services.AddRazorPages();
-
+builder.Services.AddSingleton<IAuthorizationPolicyProvider, PolicyProvider>();
+builder.Services.AddScoped<IAuthorizationHandler, PolicyHandler>();
+builder.Services.Configure<SecurityStampValidatorOptions>(options=>{
+    options.ValidationInterval = TimeSpan.Zero;
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -30,7 +35,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
-
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
