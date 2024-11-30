@@ -1,4 +1,4 @@
-@model RoleViewModel
+@model UserRoleViewModel
 
 <form method="post">
     <div>
@@ -13,8 +13,8 @@
         {
             <div>
                 <input type="checkbox" asp-for="@Model.Roles[i].IsSelected" />
-                <label>@Model.Roles[i].Role</label>
-                <input type="hidden" value="@Model.Roles[i].Role"asp-for="@Model.Roles[i].Role" />
+                <label>@Model.Roles[i].DisplayName</label>
+                <input type="hidden" value="@Model.Roles[i].DisplayName"asp-for="@Model.Roles[i].DisplayName" />
             </div>
         }
     </div>
