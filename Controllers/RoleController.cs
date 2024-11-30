@@ -27,12 +27,14 @@ public class RoleController : Controller {
     public async Task<IActionResult> ManagePermissions(string roleId) {
         var role = await _roleManager.FindByIdAsync(roleId);
         var roleClaims = await _roleManager.GetClaimsAsync(role);
-        var permissions = Permissions
-            .GeneratePermissions("Products")
-            .Select(p=>new CheckBoxDTO(){
+
+        var permissions = Permissions.GenerateAllPermissions()
+            .Select(
+                p=>new CheckBoxDTO(){
                 DisplayName=p,
                 IsSelected = roleClaims.Any(c=>c.Type == "Permission" && c.Value == p)
             });
+
         var viewModel = new RolePermissionsViewModel(){
             Permissions = permissions.ToList(),
             RoleId = roleId,
@@ -42,18 +44,21 @@ public class RoleController : Controller {
     }
     [HttpPost]
     public async Task<IActionResult> ManagePermissions(RolePermissionsViewModel model) {
+        
         if (!ModelState.IsValid) 
             return View(model);
         
         var role = await _roleManager.FindByIdAsync(model.RoleId);
         var roleClaims = await _roleManager.GetClaimsAsync(role);
+        var selectedClaims = model.Permissions.Where(p=>p.IsSelected == true).ToList();
+
         foreach(var claim in roleClaims) 
             await _roleManager.RemoveClaimAsync(role, claim);
 
-        var selectedClaims = model.Permissions.Where(p=>p.IsSelected == true).ToList();
         foreach (var item in selectedClaims)
             await _roleManager.AddClaimAsync(role, new Claim("Permission", item.DisplayName));
-        return RedirectToAction(nameof(ManagePermissions), new {roleId = model.RoleId});
+
+        return RedirectToAction(nameof(Index));
     }
 
 }
