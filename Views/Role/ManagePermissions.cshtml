@@ -1,0 +1,24 @@
+@model RolePermissionsViewModel;
+
+<form method="post">
+    <div>
+        <h1>User Name : @Model.RoleName</h1>
+        <input hidden type="text" asp-for="RoleName" class="form-control" value="@Model.RoleName"/>
+        <input hidden type="text" asp-for="RoleId" class="form-control" value="@Model.RoleId"/>
+        <br>
+    </div>
+    
+    <div>
+        <label>Permissions:</label>
+        @for (int i=0; i<Model.Permissions.Count();i++)
+        {
+            <div>
+                <input type="checkbox" asp-for="@Model.Permissions[i].IsSelected" />
+                <label>@Model.Permissions[i].DisplayName</label>
+                <input type="hidden" value="@Model.Permissions[i].DisplayName"asp-for="@Model.Permissions[i].DisplayName" />
+            </div>
+        }
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
