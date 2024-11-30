@@ -58,6 +58,10 @@ public class RoleController : Controller {
         foreach (var item in selectedClaims)
             await _roleManager.AddClaimAsync(role, new Claim("Permission", item.DisplayName));
 
+        var roleClaims01 = await _roleManager.GetClaimsAsync(role);
+        foreach(var claim in roleClaims01) {
+            Console.WriteLine(claim.Type+' '+claim.Value);
+        }
         return RedirectToAction(nameof(Index));
     }
 

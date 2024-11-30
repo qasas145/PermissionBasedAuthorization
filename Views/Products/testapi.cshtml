@@ -1,0 +1,21 @@
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+
+
+<h1>this the page of me</h1>
+@if(AuthorizationService.AuthorizeAsync(User, "Permission.Products.Create").Result.Succeeded) {
+    <h1>create</h1>
+}
+
+@if(AuthorizationService.AuthorizeAsync(User, "Permission.Products.Edit").Result.Succeeded) {
+    <h1>edit</h1>
+    <a asp-action="testedit" class="btn btn-primary">Edit</a>
+}
+
+@if(AuthorizationService.AuthorizeAsync(User, "Permission.Products.Delete").Result.Succeeded) {
+    <h1>delete</h1>
+}
+
+@if(AuthorizationService.AuthorizeAsync(User, "Permission.Products.Read").Result.Succeeded) {
+    <h1>read</h1>
+}
