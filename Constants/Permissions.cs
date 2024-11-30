@@ -7,4 +7,13 @@ public static class Permissions {
             $"Permission.{module}.Delete",
         };
     }
+    public static List<string> GenerateAllPermissions() {
+        var modules = Enum.GetValues(typeof(Modules));
+        var allPermissions = new List<string>();
+        foreach(var module in modules) {
+            allPermissions.AddRange(GeneratePermissions(module.ToString()));
+        }
+
+        return allPermissions;
+    }
 }
