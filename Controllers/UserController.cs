@@ -26,22 +26,22 @@ public class UserController : Controller {
         var roles = await _roleManager.Roles.ToListAsync();
 
 
-        var rolesViewModel = new RoleViewModel() {
+        var rolesViewModel = new UserRoleViewModel() {
             UserName =userName,
-            Roles = roles.Select(r=>new RoleDTO(){
-                Role = r.Name, 
+            Roles = roles.Select(r=>new CheckBoxDTO(){
+                DisplayName = r.Name, 
                 IsSelected= _userManager.IsInRoleAsync(user,r.Name).GetAwaiter().GetResult()
             }).ToList(),
         };
         return View(rolesViewModel);
     }
     [HttpPost]
-    public async Task<IActionResult> ManageRoles([FromForm]RoleViewModel model) {
+    public async Task<IActionResult> ManageRoles([FromForm]UserRoleViewModel model) {
 
         if (!ModelState.IsValid) 
             return View(ModelState);
         
-        var selectedRoles = model.Roles.Where(r=>r.IsSelected == true).Select(r=>r.Role);
+        var selectedRoles = model.Roles.Where(r=>r.IsSelected == true).Select(r=>r.DisplayName);
         
         var user = await _userManager.FindByNameAsync(model.UserName);
         var userRoles = await _userManager.GetRolesAsync(user);

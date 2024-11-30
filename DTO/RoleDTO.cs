@@ -1,5 +1,5 @@
-public class RoleDTO {
+public class CheckBoxDTO {
     
-    public string Role{get;set;}
+    public string DisplayName{get;set;}
     public bool IsSelected{get;set;}
 }
